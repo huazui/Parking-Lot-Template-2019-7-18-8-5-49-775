@@ -1,11 +1,12 @@
-package com.tw.apistackbase.controller;
+package com.tw.apistackbase.Controller;
+import com.tw.apistackbase.entity.LotOrder;
 import com.tw.apistackbase.entity.LotRepository;
+import com.tw.apistackbase.entity.OrderRepository;
 import com.tw.apistackbase.entity.ParkingLot;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -13,6 +14,8 @@ public class MyControl {
     @Autowired
     public LotRepository lotRepository;
 
+    @Autowired
+    public OrderRepository orderRepository;
 
 
     public String increate(ParkingLot lot){
@@ -54,5 +57,25 @@ public class MyControl {
         return lotRepository.findByName(name).getVolumn();
     }
 
+   public String parkCar(String lotName,String carId,String createTime,String oderNumber){
+        orderRepository.save(new LotOrder("str1","str2","str3","str4"));
+        if(orderRepository.findAll().size()<1) {
+            LotOrder order1 = new LotOrder(lotName, oderNumber, carId, createTime);
+            order1.setStatus(true);
+            return orderRepository.save(order1).getOrderNumber();
+        }
+        else {
+            return "no position.";
+        }
 
+   }
+
+   public String fetchCar(String carId,String time){
+       orderRepository.save(new LotOrder("ting1","001","vz009","20190101"));
+        LotOrder myorder=orderRepository.findByCarid(carId);
+        myorder.setStatus(false);
+        myorder.setFinishTime(time);
+        return myorder.getOrderNumber();
+
+   }
 }
